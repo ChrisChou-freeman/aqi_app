@@ -1,0 +1,32 @@
+import json
+
+from ..lib import net
+from . import fake_data
+
+class AQIapi:
+    def __init__(self, debug=True) -> None:
+        self.debug = debug
+        self.key = self._load_api_key()
+
+    def _load_api_key(self) -> str:
+        return ''
+
+    def request_country(self) -> net.ReturnData:
+        return_data = net.ReturnData()
+        if self.debug:
+            return_data.data = json.loads(fake_data.request_country)
+            return return_data
+        return return_data
+
+    def request_state(self, country: str) -> net.ReturnData:
+        return_data = net.ReturnData()
+        if self.debug:
+            return_data.data = json.loads(fake_data.request_state)
+            return return_data
+        return return_data
+
+    def request_city(self, country: str, state: str) -> net.ReturnData:
+        ...
+
+    def request_city_data(self, country: str, state: str, city: str) -> net.ReturnData:
+        ...

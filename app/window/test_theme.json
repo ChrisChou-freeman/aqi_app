@@ -1,0 +1,56 @@
+{
+    "defaults":
+    {
+        "colours":
+        {
+             "normal_bg":"#ecf0f1",
+             "normal_text":"#000000",
+             "normal_border": "#ecf0f1,#ecf0f1,0",
+             "dark_bg": "#ecf0f1"
+        }
+    },
+     "#ddm":
+     {
+         "misc":
+         {
+            "expand_direction": "down",
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "6" 
+
+         }
+     },
+     "#ddm.#selected_option":
+     {
+         "misc":
+         {
+            "expand_direction": "down",
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "6" 
+
+         }
+     },
+     "#ddm.#expand_button":
+     {
+         "misc":
+         {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "6" 
+         }
+     },
+     "#ddm.#drop_down_options_list":
+     {
+         "misc":
+         {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "6" 
+         }
+     },
+      "drop_down_menu.#drop_down_options_list.button":
+     {
+         "misc":
+         {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "6" 
+         }
+     }
+ }
