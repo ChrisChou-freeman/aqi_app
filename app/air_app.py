@@ -20,11 +20,11 @@ class App(rumps.App):
 
     def __init__(self) -> None:
         super(App, self).__init__('...')
-        self._url = settings.AQI_DATA_API
-        self._site_name = settings.SITE_NAME
         self._menus = Menus()
         self._init_menu()
-        rumps.debug_mode(settings.DEBUG)
+        # self._url = settings.AQI_DATA_API
+        # self._site_name = settings.SITE_NAME
+        # rumps.debug_mode(settings.DEBUG)
 
     def _init_menu(self) -> None:
         for menu in self._menus:
@@ -45,6 +45,7 @@ class App(rumps.App):
     def click_hello_window(self, _) -> None:
         w = window.Window()
         w.run()
+        print('window close')
 
     # def get_air(self) -> tuple[str, str]:
     #     """Query and parse AQI data."""

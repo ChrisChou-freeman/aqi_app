@@ -1,5 +1,5 @@
 import pygame as pg
-import pygame_gui
+import pygame_gui as pg_gui
 from pygame_gui.core import ObjectID
 
 
@@ -14,17 +14,15 @@ class Window:
         self.clock = pg.time.Clock()
         self.screen = self._create_screen()
         self.is_running = True
-        self.manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), './test_theme.json')
-        self.init_ui()
-
-    def init_ui(self) -> None:
-        self.drop_down_menu = pygame_gui.elements.UIDropDownMenu(
+        self.manager = pg_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), enable_live_theme_updates=False)
+        self.drop_down_menu = pg_gui.elements.UIDropDownMenu(
             ['a', 'b', 'c'],
             'a',
             pg.Rect(350, 275, 200, 30),
             manager=self.manager,
             object_id=ObjectID(object_id='#ddm')
         )
+
 
     def _create_screen(self) -> pg.surface.Surface:
         screen = pg.display.set_mode(
@@ -33,7 +31,8 @@ class Window:
         return screen
 
     def update(self) -> None:
-        dt = float(self.clock.get_time() / 1000) 
+        dt = float(self.clock.get_time() / 1000)
+        # print(self.clock.get_fps())
         self.manager.update(dt)
         pg.display.update()
 
@@ -47,17 +46,21 @@ class Window:
         self.manager.draw_ui(self.screen)
 
     def handle_event(self, key_event: pg.event.Event) -> None:
-        self.manager.process_events(key_event)
         if key_event.type == pg.QUIT:
             self.is_running = False
             pg.quit()
+        elif key_event.type == pg.KEYDOWN:
+            if key_event.key == pg.K_a:
+                print('append a')
+                self.drop_down_menu.options_list.append('a')
+        self.manager.process_events(key_event)
 
     def run(self) -> None:
         while self.is_running:
             self.clock.tick(self.fps)
-            self.update()
-            self.draw()
             for event in pg.event.get():
                 self.handle_event(event)
+            self.update()
+            self.draw()
 
 # Window().run()
