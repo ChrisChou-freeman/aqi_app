@@ -13,3 +13,6 @@ GET_COUNTRIES = 'http://api.airvisual.com/v2/countries'
 GET_STATES = 'http://api.airvisual.com/v2/states'
 GET_CITIRS_BY_STATE = 'http://api.airvisual.com/v2/cities'
 GET_AQI_DATA = 'http://api.airvisual.com/v2/city'
+
+RGB_DARK = (0, 0, 0)
+RGB_WHITE = (255, 255, 255)
