@@ -32,8 +32,8 @@ class Window:
         pg.display.set_caption(self.title)
         return screen
 
-    def update(self) -> None:
-        dt = float(self.clock.get_time() / 1000)
+    def update(self, dt: float) -> None:
+        # dt = float(self.clock.get_time() / 1000)
         self.manager.update(dt)
         pg.display.update()
 
@@ -56,7 +56,8 @@ class Window:
     def run(self) -> None:
         while self.is_running:
             self.clock.tick(self.fps)
-            self.update()
+            dt = float(self.clock.get_time() / 1000)
+            self.update(dt)
             self.draw()
             for event in pg.event.get():
                 self.handle_event(event)
