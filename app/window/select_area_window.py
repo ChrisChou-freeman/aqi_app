@@ -45,12 +45,17 @@ class SelectAreaWindow(base_window.Window):
         super().handle_event(key_event)
         if not self.is_running:
             return
-        # select countries option event
         country = ''
+        state = ''
         if key_event.type == pg_gui.UI_DROP_DOWN_MENU_CHANGED:
+            # select countries option event
             if key_event.ui_element == self.select_countries:
                 country = key_event.text
                 self.get_states(country)
+            # select states option event
+            if key_event.ui_element == self.select_states:
+                state = key_event.text
+                self.get_cities(country, state)
 
     def get_countries(self) -> list[str]:
         countries = aqi.AQIapi(debug=True).request_country()
@@ -69,5 +74,6 @@ class SelectAreaWindow(base_window.Window):
             self.select_states.options_list.append(state)
 
     def get_cities(self, country: str, state: str) -> None:
-        ...
+        if country == '' or state == '':
+            return
 
