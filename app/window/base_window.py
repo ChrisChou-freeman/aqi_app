@@ -23,7 +23,7 @@ class Window:
         self.is_running = True
         self.manager = pg_gui.UIManager(
             (self.width, self.height),
-            enable_live_theme_updates=False,
+            enable_live_theme_updates=True,
             theme_path=self.theme_path
         )
 

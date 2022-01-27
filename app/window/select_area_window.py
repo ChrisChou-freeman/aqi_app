@@ -81,7 +81,10 @@ class SelectAreaWindow(base_window.Window):
             return
         if key_event.type == pg_gui.UI_BUTTON_PRESSED:
             if key_event.ui_element == self.contries_menu:
-                print('country')
+                if self.contries_menu.object_ids is not None:
+                    if not self.contries_menu.is_selected:
+                        self.contries_menu.select()
+                    # self.contries_menu.object_ids.append('#ms')
         # if key_event.type == pg_gui.UI_DROP_DOWN_MENU_CHANGED:
         #     # select countries option event
         #     if key_event.ui_element == self.select_countries:
