@@ -57,5 +57,21 @@
          "colours": {
               "dark_bg": "#ffffff"
          }
+     },
+     "#mc": {
+         "colours": {
+             "dark_bg": "#ffffff",
+             "normal_border": "#bdc3c7"
+         },
+         "misc": {
+             "border_width": "1",
+             "shadow_width": "0"
+         }
+     },
+     "#m": {
+         "colours": {
+             "normal_bg": "#ffffff",
+             "normal_border": "#ffffff"
+         }
      }
  }
