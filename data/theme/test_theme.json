@@ -73,11 +73,5 @@
              "normal_bg": "#ffffff",
              "normal_border": "#ffffff"
          }
-     },
-     "#ms": {
-         "colours": {
-             "normal_bg": "#bdc3c7",
-             "normal_border": "#bdc3c7"
-         }
      }
  }

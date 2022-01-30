@@ -15,6 +15,7 @@ class SelectAreaWindow(base_window.Window):
         self.selected_country = ''
         self.selected_state = ''
         self.selected_city = ''
+        self.current_sleceted_menu = ''
         self.label_tiele = pg_gui.elements.UILabel(
             pg.Rect(0, 0, 550, 50),
             'Select Area',
@@ -41,7 +42,7 @@ class SelectAreaWindow(base_window.Window):
             container=self.mane_panel,
             object_id=ObjectID(object_id='#m')
         )
-        self.states_menu = pg_gui.elements.UIButton(
+        self.city_menu = pg_gui.elements.UIButton(
             pg.Rect(198, -1, 100, 45),
             'City',
             manager=self.manager,
@@ -80,20 +81,13 @@ class SelectAreaWindow(base_window.Window):
         if not self.is_running:
             return
         if key_event.type == pg_gui.UI_BUTTON_PRESSED:
-            if key_event.ui_element == self.contries_menu:
-                if self.contries_menu.object_ids is not None:
-                    if not self.contries_menu.is_selected:
-                        self.contries_menu.select()
-                    # self.contries_menu.object_ids.append('#ms')
-        # if key_event.type == pg_gui.UI_DROP_DOWN_MENU_CHANGED:
-        #     # select countries option event
-        #     if key_event.ui_element == self.select_countries:
-        #         country = key_event.text
-        #         self.get_states(country)
-        #     # select states option event
-        #     if key_event.ui_element == self.select_states:
-        #         state = key_event.text
-        #         self.get_cities(country, state)
+            menu_list = [self.contries_menu, self.states_menu, self.city_menu]
+            if key_event.ui_element in menu_list:
+                for menu in menu_list:
+                    if key_event.ui_element == menu:
+                        menu.select()
+                    else:
+                        menu.unselect()
 
     def update(self, dt: float) -> None:
         super().update(dt)
