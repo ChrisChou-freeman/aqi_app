@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+from typing import NamedTuple, Optional
+
 import pygame as pg
 import pygame_gui as pg_gui
 from pygame_gui.core import ObjectID
@@ -7,15 +10,24 @@ from app.window import base_window
 from app import settings
 from app.api import aqi
 
+class MenuName(NamedTuple):
+    Country: str = 'Country'
+    State: str = 'State'
+    City: str = 'City'
+
+@dataclass
+class SelectArea:
+    country: Optional[str] = None
+    state: Optional[str] = None
+    city: Optional[str]  = None
+
 class SelectAreaWindow(base_window.Window):
     def __init__(self) -> None:
         them_pack = PackageResource(package='data.theme', resource='test_theme.json')
         super().__init__('', 550, 300, them_pack, settings.RGB_WHITE)
-        countries = self.get_countries()
-        self.selected_country = ''
-        self.selected_state = ''
-        self.selected_city = ''
-        self.current_sleceted_menu = ''
+        self.select_area = SelectArea()
+        self.menu_name = MenuName()
+        self.current_sleceted_menu: Optional[pg_gui.elements.UIButton]  = None
         self.label_tiele = pg_gui.elements.UILabel(
             pg.Rect(0, 0, 550, 50),
             'Select Area',
@@ -30,88 +42,109 @@ class SelectAreaWindow(base_window.Window):
         )
         self.contries_menu = pg_gui.elements.UIButton(
             pg.Rect(2, -1, 100, 45),
-            'Contry',
+            self.menu_name.Country,
             manager=self.manager,
             container=self.mane_panel,
             object_id=ObjectID(object_id='#m')
         )
         self.states_menu = pg_gui.elements.UIButton(
             pg.Rect(100, -1, 100, 45),
-            'State',
+            self.menu_name.State,
             manager=self.manager,
             container=self.mane_panel,
             object_id=ObjectID(object_id='#m')
         )
         self.city_menu = pg_gui.elements.UIButton(
             pg.Rect(198, -1, 100, 45),
-            'City',
+            self.menu_name.City,
             manager=self.manager,
             container=self.mane_panel,
             object_id=ObjectID(object_id='#m')
         )
         self.selection_list = pg_gui.elements.UISelectionList(
             pg.Rect(0, 95, 556, 205),
-            countries,
+            [],
             manager=self.manager
         )
-        # self.label_countries = None
-        # self.select_countries = pg_gui.elements.UIDropDownMenu(
-        #     countries,
-        #     countries[0],
-        #     pg.Rect(100, 40, 200, 30),
-        #     manager=self.manager,
-        #     object_id=ObjectID(object_id='#ddm')
-        # )
-        # self.label_states = pg_gui.elements.UILabel(
-        #     pg.Rect(170, 75, 60, 20),
-        #     'State:',
-        #     manager=self.manager,
-        #     object_id=ObjectID(object_id='#lbt')
-        # )
-        # self.select_states = pg_gui.elements.UIDropDownMenu(
-        #     [],
-        #     '',
-        #     pg.Rect(100, 100, 200, 30),
-        #     manager=self.manager,
-        #     object_id=ObjectID(object_id='#lbt')
-        # )
+
+    def selected_menu(self, key_event: pg.event.Event) -> None:
+        menu_list = [self.contries_menu, self.states_menu, self.city_menu]
+        if key_event.ui_element not in menu_list:
+            return
+        for menu in menu_list:
+            if key_event.ui_element == menu:
+                self.current_sleceted_menu = menu
+                menu.select()
+                self.change_selection_list()
+            else:
+                menu.unselect()
 
     def handle_event(self, key_event: pg.event.Event) -> None:
         super().handle_event(key_event)
         if not self.is_running:
             return
         if key_event.type == pg_gui.UI_BUTTON_PRESSED:
-            menu_list = [self.contries_menu, self.states_menu, self.city_menu]
-            if key_event.ui_element in menu_list:
-                for menu in menu_list:
-                    if key_event.ui_element == menu:
-                        menu.select()
-                    else:
-                        menu.unselect()
+            self.selected_menu(key_event)
+        elif key_event.type == pg_gui.UI_SELECTION_LIST_NEW_SELECTION:
+            if key_event.ui_element == self.selection_list:
+                self.set_select_area()
+
+    def update_menu_text(self) -> None:
+        if self.select_area.country is not None and self.contries_menu.text != self.select_area.country:
+            self.contries_menu.set_text(self.select_area.country)
+        if self.select_area.state is not None and self.contries_menu.text != self.select_area.state:
+            self.states_menu.set_text(self.select_area.state)
+        if self.select_area.city is not None and self.contries_menu.text != self.select_area.city:
+            self.city_menu.set_text(self.select_area.city)
 
     def update(self, dt: float) -> None:
         super().update(dt)
+        self.update_menu_text()
+
+    def set_select_area(self) -> None:
+        current_selection = self.selection_list.get_single_selection()
+        if self.current_sleceted_menu == self.contries_menu:
+            self.select_area.country = current_selection
+        elif self.current_sleceted_menu == self.states_menu:
+            self.select_area.state = current_selection
+        elif self.current_sleceted_menu ==  self.city_menu:
+            self.select_area.city = current_selection
+
+    def change_selection_list(self) -> None:
+        if self.current_sleceted_menu == self.contries_menu:
+            self.selection_list.set_item_list(self.get_countries())
+        elif self.current_sleceted_menu == self.states_menu:
+            self.selection_list.set_item_list(self.get_states())
+        elif self.current_sleceted_menu ==  self.city_menu:
+            self.selection_list.set_item_list(self.get_cities())
 
     def get_countries(self) -> list[str]:
         countries = aqi.AQIapi(debug=True).request_country()
         if countries.error:
-            raise IOError(countries.reson)
+            return []
         datas: list[dict[str, str]] = countries.data['data']
         return [ data['country'] for data in datas ]
 
-    def get_states(self, country: str) -> None:
-        if country == '':
-            return
+    def get_states(self) -> list[str]:
+        country = self.select_area.country
+        if country is None:
+            return []
         states = aqi.AQIapi(debug=True).request_state(country)
+        if states.error:
+            return []
         datas: list[dict[str, str]] = states.data['data']
         states_options = [data['state'] for data in datas]
-        # for state in states_options:
-        #     self.select_states.options_list.append(state)
+        return states_options
 
-    def get_cities(self, country: str, state: str) -> None:
-        if country == '' or state == '':
-            return
+    def get_cities(self) -> list[str]:
+        country = self.select_area.country
+        state = self.select_area.state
+        if country is None or state is None:
+            return []
         citys_data = aqi.AQIapi(debug=True).request_city(country, state)
+        if citys_data.error:
+            return []
         datas: list[dict[str, str]] = citys_data.data['data']
-        print(datas)
+        cities = [ data['city'] for data in datas  ]
+        return cities
 
