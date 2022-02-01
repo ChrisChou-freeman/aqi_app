@@ -53,7 +53,7 @@ class Window:
             return
         self.manager.process_events(key_event)
 
-    def run(self) -> None:
+    def run(self) -> dict[str, Optional[str]]:
         while self.is_running:
             self.clock.tick(self.fps)
             dt = float(self.clock.get_time() / 1000)
@@ -61,4 +61,5 @@ class Window:
             self.draw()
             for event in pg.event.get():
                 self.handle_event(event)
+        return {}
 

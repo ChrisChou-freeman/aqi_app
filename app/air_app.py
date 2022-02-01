@@ -17,7 +17,6 @@ class Menus(NamedTuple):
 
 
 class App(rumps.App):
-
     def __init__(self) -> None:
         super(App, self).__init__('...')
         self._menus = Menus()

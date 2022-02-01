@@ -61,6 +61,7 @@ class SelectAreaWindow(base_window.Window):
             container=self.mane_panel,
             object_id=ObjectID(object_id='#m')
         )
+        self.accept_menu = None
         self.selection_list = pg_gui.elements.UISelectionList(
             pg.Rect(0, 95, 556, 205),
             [],
@@ -97,9 +98,15 @@ class SelectAreaWindow(base_window.Window):
         if self.select_area.city is not None and self.contries_menu.text != self.select_area.city:
             self.city_menu.set_text(self.select_area.city)
 
+    def check_selected_status(self) -> None:
+        '''check if area all selected'''
+        if all([self.select_area.country, self.select_area.state, self.select_area.city]):
+            self.is_running = False
+
     def update(self, dt: float) -> None:
         super().update(dt)
         self.update_menu_text()
+        self.check_selected_status()
 
     def set_select_area(self) -> None:
         current_selection = self.selection_list.get_single_selection()
@@ -147,4 +154,12 @@ class SelectAreaWindow(base_window.Window):
         datas: list[dict[str, str]] = citys_data.data['data']
         cities = [ data['city'] for data in datas  ]
         return cities
+
+    def run(self) -> dict[str, Optional[str]]:
+        super().run()
+        return {
+            'country': self.select_area.country,
+            'state': self.select_area.state,
+            'city': self.select_area.city
+        }
 
