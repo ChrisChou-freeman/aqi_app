@@ -1,29 +1,27 @@
 import datetime
-import json
 from typing import NamedTuple
 
 import rumps
 
-from . import lib, settings
-from . import window
+from . import window, settings
+
 
 class Menus(NamedTuple):
     update_time: str = 'Update Time'
-    hello_window: str = 'hello window'
-    # setup_key: str = 'Set iQair Key'
-    # change_area: str = 'Change Area'
-    # separator: object = rumps.separator
-    # show_all_area: str = 'Show all area'
+    set_key: str = 'Set Key'
+    change_area: str = 'Change Area'
+    separator: object = rumps.separator
 
+MENUS = Menus()
 
 class App(rumps.App):
     def __init__(self) -> None:
-        super(App, self).__init__('...')
-        self._menus = Menus()
+        super(App, self).__init__('AQI:32')
+        self._menus = MENUS
         self._init_menu()
         # self._url = settings.AQI_DATA_API
         # self._site_name = settings.SITE_NAME
-        # rumps.debug_mode(settings.DEBUG)
+        rumps.debug_mode(settings.DEBUG)
 
     def _init_menu(self) -> None:
         for menu in self._menus:
@@ -39,12 +37,24 @@ class App(rumps.App):
     def _get_refresh_time(self) -> str:
         return f'Update:{datetime.datetime.now().strftime("%m-%d %H:%M:%S")}'
 
+    @rumps.clicked(MENUS.change_area)
+    def change_area_window(self, _) -> None:
+        w = window.SelectAreaWindow()
+        result = w.run()
+        print(result)
 
-    @rumps.clicked("hello window")
-    def click_hello_window(self, _) -> None:
-        w = window.Window()
-        w.run()
-        print('window close')
+    @rumps.clicked(MENUS.set_key)
+    def set_key_window(self, _) -> None:
+        w = window.SetKeyWindow()
+        result = w.run()
+        print(result)
+
+
+    # @rumps.clicked("hello window")
+    # def click_hello_window(self, _) -> None:
+    #     w = window.Window()
+    #     w.run()
+    #     print('window close')
 
     # def get_air(self) -> tuple[str, str]:
     #     """Query and parse AQI data."""
@@ -104,10 +114,10 @@ class App(rumps.App):
     #         dimensions=(100, 20)
     #     )
 
-    #     resp = setting_window.run()
-    #     if resp.clicked:
-    #         self._site_name = resp.text
-    #         self.menu[self._menus.air_data] = self.get_air()[0]
+        # resp = setting_window.run()
+        # if resp.clicked:
+        #     self._site_name = resp.text
+        #     self.menu[self._menus.air_data] = self.get_air()[0]
 
     # @rumps.timer(60)
     # def update(self, _: rumps.Timer) -> None:

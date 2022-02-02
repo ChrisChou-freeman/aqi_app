@@ -58,6 +58,12 @@
               "dark_bg": "#ffffff"
          }
      },
+     "#lbt2":{
+         "colours": {
+              "dark_bg": "#ffffff",
+              "normal_text": "#000000"
+         }
+     },
      "#mc": {
          "colours": {
              "dark_bg": "#ffffff",
@@ -72,6 +78,11 @@
          "colours": {
              "normal_bg": "#ffffff",
              "normal_border": "#ffffff"
+         }
+     },
+     "#tel": {
+         "colours": {
+             "text_cursor": "#000000"
          }
      }
  }

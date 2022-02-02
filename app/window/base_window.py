@@ -33,7 +33,6 @@ class Window:
         return screen
 
     def update(self, dt: float) -> None:
-        # dt = float(self.clock.get_time() / 1000)
         self.manager.update(dt)
         pg.display.update()
 
@@ -61,5 +60,6 @@ class Window:
             self.draw()
             for event in pg.event.get():
                 self.handle_event(event)
+        pg.quit()
         return {}
 
