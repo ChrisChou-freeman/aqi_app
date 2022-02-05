@@ -1,1 +1,2 @@
 rumps==0.3.0
+pygame-gui==0.6.4
