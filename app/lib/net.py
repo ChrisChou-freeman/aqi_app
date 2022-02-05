@@ -7,16 +7,22 @@ import urllib.error
 from dataclasses import dataclass
 from typing import Any, Optional
 
+
 @dataclass
 class ReturnData:
     error: bool = False
     reson: str = ''
     data: Any = None
 
+
 async def a_request(url: str) -> client.HTTPResponse:
     loop = asyncio.get_event_loop()
-    res: client.HTTPResponse = await loop.run_in_executor(None, urllib.request.urlopen, url)
+    res: client.HTTPResponse = await loop.run_in_executor(
+        None,
+        urllib.request.urlopen, url
+    )
     return res
+
 
 def request(url: str) -> ReturnData:
     return_data = ReturnData()

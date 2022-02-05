@@ -10,24 +10,32 @@ from app.window import base_window
 from app import settings
 from app.api import aqi
 
+
 class MenuName(NamedTuple):
     Country: str = 'Country'
     State: str = 'State'
     City: str = 'City'
 
+
 @dataclass
 class SelectArea:
+    success: bool = True
+    reson: str = ''
     country: Optional[str] = None
     state: Optional[str] = None
-    city: Optional[str]  = None
+    city: Optional[str] = None
+
 
 class SelectAreaWindow(base_window.Window):
     def __init__(self) -> None:
-        them_pack = PackageResource(package='data.theme', resource='test_theme.json')
+        them_pack = PackageResource(
+            package='data.theme',
+            resource='test_theme.json'
+        )
         super().__init__('', 550, 300, them_pack, settings.RGB_WHITE)
         self.select_area = SelectArea()
         self.menu_name = MenuName()
-        self.current_sleceted_menu: Optional[pg_gui.elements.UIButton]  = None
+        self.current_sleceted_menu: Optional[pg_gui.elements.UIButton] = None
         self.label_tiele = pg_gui.elements.UILabel(
             pg.Rect(0, 0, 550, 50),
             'Select Area',
@@ -91,16 +99,22 @@ class SelectAreaWindow(base_window.Window):
                 self.set_select_area()
 
     def update_menu_text(self) -> None:
-        if self.select_area.country is not None and self.contries_menu.text != self.select_area.country:
+        if self.select_area.country is not None \
+                and self.contries_menu.text != self.select_area.country:
             self.contries_menu.set_text(self.select_area.country)
-        if self.select_area.state is not None and self.contries_menu.text != self.select_area.state:
+        if self.select_area.state is not None \
+                and self.contries_menu.text != self.select_area.state:
             self.states_menu.set_text(self.select_area.state)
-        if self.select_area.city is not None and self.contries_menu.text != self.select_area.city:
+        if self.select_area.city is not None \
+                and self.contries_menu.text != self.select_area.city:
             self.city_menu.set_text(self.select_area.city)
 
     def check_selected_status(self) -> None:
         '''check if area all selected'''
-        if all([self.select_area.country, self.select_area.state, self.select_area.city]):
+        if all([
+                self.select_area.country,
+                self.select_area.state,
+                self.select_area.city]):
             self.is_running = False
 
     def update(self, dt: float) -> None:
@@ -114,7 +128,7 @@ class SelectAreaWindow(base_window.Window):
             self.select_area.country = current_selection
         elif self.current_sleceted_menu == self.states_menu:
             self.select_area.state = current_selection
-        elif self.current_sleceted_menu ==  self.city_menu:
+        elif self.current_sleceted_menu == self.city_menu:
             self.select_area.city = current_selection
 
     def change_selection_list(self) -> None:
@@ -122,7 +136,7 @@ class SelectAreaWindow(base_window.Window):
             self.selection_list.set_item_list(self.get_countries())
         elif self.current_sleceted_menu == self.states_menu:
             self.selection_list.set_item_list(self.get_states())
-        elif self.current_sleceted_menu ==  self.city_menu:
+        elif self.current_sleceted_menu == self.city_menu:
             self.selection_list.set_item_list(self.get_cities())
 
     def get_countries(self) -> list[str]:
@@ -130,7 +144,7 @@ class SelectAreaWindow(base_window.Window):
         if countries.error:
             return []
         datas: list[dict[str, str]] = countries.data['data']
-        return [ data['country'] for data in datas ]
+        return [data['country'] for data in datas]
 
     def get_states(self) -> list[str]:
         country = self.select_area.country
@@ -140,8 +154,7 @@ class SelectAreaWindow(base_window.Window):
         if states.error:
             return []
         datas: list[dict[str, str]] = states.data['data']
-        states_options = [data['state'] for data in datas]
-        return states_options
+        return [data['state'] for data in datas]
 
     def get_cities(self) -> list[str]:
         country = self.select_area.country
@@ -152,8 +165,7 @@ class SelectAreaWindow(base_window.Window):
         if citys_data.error:
             return []
         datas: list[dict[str, str]] = citys_data.data['data']
-        cities = [ data['city'] for data in datas  ]
-        return cities
+        return [data['city'] for data in datas]
 
     def run(self) -> dict[str, Optional[str]]:
         super().run()
@@ -162,4 +174,3 @@ class SelectAreaWindow(base_window.Window):
             'state': self.select_area.state,
             'city': self.select_area.city
         }
-

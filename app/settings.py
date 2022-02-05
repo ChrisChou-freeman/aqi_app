@@ -2,8 +2,7 @@ import os
 
 PRO_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = False
-AQI_DATA_API = 'http://opendata2.epa.gov.tw/AQI.json'
-TITLE_NAME = '基隆'   # default value
+# AQI_DATA_API = 'http://opendata2.epa.gov.tw/AQI.json'
 TEST_DATA_PATH = os.path.join(PRO_PATH, 'test_aqi.data.json')
 THEME_PACK_PATH = os.path.join(PRO_PATH, 'data/theme')
 

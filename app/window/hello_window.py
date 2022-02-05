@@ -7,6 +7,7 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 800
 WINDOW_TITLE = 'Quick Start'
 
+
 class Window:
     def __init__(self):
         pg.init()
@@ -14,7 +15,10 @@ class Window:
         self.clock = pg.time.Clock()
         self.screen = self._create_screen()
         self.is_running = True
-        self.manager = pg_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT), enable_live_theme_updates=False)
+        self.manager = pg_gui.UIManager(
+            (SCREEN_WIDTH, SCREEN_HEIGHT),
+            enable_live_theme_updates=False
+        )
         self.drop_down_menu = pg_gui.elements.UIDropDownMenu(
             ['a', 'b', 'c'],
             'a',
@@ -22,7 +26,6 @@ class Window:
             manager=self.manager,
             object_id=ObjectID(object_id='#ddm')
         )
-
 
     def _create_screen(self) -> pg.surface.Surface:
         screen = pg.display.set_mode(

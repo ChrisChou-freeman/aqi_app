@@ -4,6 +4,7 @@ import pygame as pg
 import pygame_gui as pg_gui
 from pygame_gui import PackageResource
 
+
 class Window:
     def __init__(self,
                  title: str,
@@ -62,4 +63,3 @@ class Window:
                 self.handle_event(event)
         pg.quit()
         return {}
-
