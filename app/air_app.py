@@ -1,5 +1,5 @@
 import datetime
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 import rumps
 
@@ -19,8 +19,8 @@ MENUS = Menus()
 class App(rumps.App):
     def __init__(self) -> None:
         super().__init__('AQI:32')
-        self._init_menu()
         rumps.debug_mode(settings.DEBUG)
+        self._init_menu()
 
     def _init_menu(self) -> None:
         for menu in MENUS:
@@ -37,7 +37,14 @@ class App(rumps.App):
     def change_area_window(self, _) -> None:
         w = window.SelectAreaWindow()
         result = w.run()
-        print(result)
+        if not result.success:
+            rumps.alert('Message', result.reson)
+        else:
+            print(result)
+
+    @rumps.notifications
+    def notification_center(info: Any) -> None:
+        print(info)
 
     @rumps.clicked(MENUS.set_key)
     def set_key_window(self, _) -> None:

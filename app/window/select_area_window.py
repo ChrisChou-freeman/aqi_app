@@ -7,8 +7,8 @@ from pygame_gui.core import ObjectID
 from pygame_gui import PackageResource
 
 from app.window import base_window
-from app import settings
 from app.api import aqi
+from app import settings
 
 
 class MenuName(NamedTuple):
@@ -24,6 +24,9 @@ class SelectArea:
     country: Optional[str] = None
     state: Optional[str] = None
     city: Optional[str] = None
+
+    def filled_all(self) -> bool:
+        return all([self.country, self.state, self.city])
 
 
 class SelectAreaWindow(base_window.Window):
@@ -111,10 +114,7 @@ class SelectAreaWindow(base_window.Window):
 
     def check_selected_status(self) -> None:
         '''check if area all selected'''
-        if all([
-                self.select_area.country,
-                self.select_area.state,
-                self.select_area.city]):
+        if self.select_area.filled_all() or not self.select_area.success:
             self.is_running = False
 
     def update(self, dt: float) -> None:
@@ -167,10 +167,6 @@ class SelectAreaWindow(base_window.Window):
         datas: list[dict[str, str]] = citys_data.data['data']
         return [data['city'] for data in datas]
 
-    def run(self) -> dict[str, Optional[str]]:
+    def run(self) -> SelectArea:
         super().run()
-        return {
-            'country': self.select_area.country,
-            'state': self.select_area.state,
-            'city': self.select_area.city
-        }
+        return self.select_area

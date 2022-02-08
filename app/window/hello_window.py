@@ -65,5 +65,3 @@ class Window:
                 self.handle_event(event)
             self.update()
             self.draw()
-
-# Window().run()

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 import pygame as pg
 import pygame_gui as pg_gui
@@ -53,7 +53,7 @@ class Window:
             return
         self.manager.process_events(key_event)
 
-    def run(self) -> dict[str, Optional[str]]:
+    def run(self) -> Any:
         while self.is_running:
             self.clock.tick(self.fps)
             dt = float(self.clock.get_time() / 1000)
@@ -62,4 +62,3 @@ class Window:
             for event in pg.event.get():
                 self.handle_event(event)
         pg.quit()
-        return {}
