@@ -84,5 +84,16 @@
          "colours": {
              "text_cursor": "#000000"
          }
+     },
+     "#tb": {
+         "colours": {
+             "dark_bg": "#ffffff",
+             "normal_bg": "#ffffff"
+         },
+         "misc": {
+            "link_normal_underline": "0",
+            "border_width": "0",
+            "shadow_width": "0"
+         }
      }
  }

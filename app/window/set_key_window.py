@@ -1,8 +1,10 @@
 from typing import Optional
 from dataclasses import dataclass
+import webbrowser
 
 import pygame as pg
 import pygame_gui as pg_gui
+import pygame_gui
 from pygame_gui.core import ObjectID
 from pygame_gui import PackageResource
 
@@ -39,6 +41,12 @@ class SetKeyWindow(base_window.Window):
             manager=self.manager,
             object_id=ObjectID(object_id='#tel')
         )
+        self.link_text = pg_gui.elements.UITextBox(
+            '<a href="https://www.iqair.com/dashboard/api" >Get Key</a>',
+            pg.Rect(160, 100, 80, 45),
+            manager=self.manager,
+            object_id=ObjectID(object_id='#tb')
+        )
         key_str = self.data_base.get_data('key')
         if key_str is not None:
             self.text_entry.set_text(key_str)
@@ -48,6 +56,8 @@ class SetKeyWindow(base_window.Window):
         if key_event.type == pg.KEYDOWN:
             if key_event.key == pg.K_RETURN:
                 self.is_running = False
+        if key_event.type == pg_gui.UI_TEXT_BOX_LINK_CLICKED:
+            webbrowser.open(key_event.link_target)
 
     def update(self, dt: float) -> None:
         super().update(dt)
