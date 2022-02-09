@@ -13,23 +13,20 @@ class DataBase:
         self.data_path = data_path
         self.data_obj: dict[str, dict[str, str]] = {}
 
-    def set_data(self, key: str, value: str) -> None:
+    def set_data(self, key: str, value: str, outdate_time: int) -> None:
         self.data_obj[key] = {
             'update_time': str(time.time()),
-            'data': value
+            'data': value,
+            'outdate_time': str(outdate_time)
         }
 
     def is_outdate_data(self, key: str, data: dict[str, str]) -> bool:
-        if key == 'key':
+        if key == 'key' or key == 'my_location':
             return False
         now_date = datetime.fromtimestamp(time.time())
         update_time = datetime.fromtimestamp(float(data['update_time']))
         past_time = now_date - update_time
-        outdate_time = 0
-        if key == 'city_data':
-            outdate_time = 10*ONE_HOUR_T0_SECONDS
-        else:
-            outdate_time = 30*ONE_DAY_TO_SECONDS
+        outdate_time = int(data['outdate_time'])
         if past_time.total_seconds() > outdate_time:
             return True
         return False

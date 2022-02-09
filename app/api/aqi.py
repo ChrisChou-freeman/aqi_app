@@ -6,6 +6,9 @@ from .. import settings
 from . import fake_data
 from .. import data_base
 
+ONE_HOUR_T0_SECONDS = 60*60
+ONE_DAY_TO_SECONDS = 24*60*60
+
 
 class AQIapi:
     def __init__(self, debug=True) -> None:
@@ -32,6 +35,21 @@ class AQIapi:
         return_data.data = data
         return return_data
 
+    def handle_response(self,
+                        cache_name: str,
+                        rsp_data: net.ReturnData,
+                        outdate_time: int) -> net.ReturnData:
+        return_data = net.ReturnData()
+        if rsp_data.error:
+            return rsp_data
+        if rsp_data.data['status'] != 'success':
+            return_data.error = True
+            return_data.reson = return_data.data['data']['message']
+            return return_data
+        with self.database as db:
+            db.set_data(cache_name, rsp_data.data['data'], outdate_time)
+        return rsp_data
+
     def request_countries(self) -> net.ReturnData:
         return_data = net.ReturnData()
         if self.key == '':
@@ -45,32 +63,70 @@ class AQIapi:
         if contries_cache is not None:
             return_data.data = contries_cache
             return return_data
-        request_data = net.request(settings.GET_COUNTRIES, {'key': self.key})
-        return request_data
+        rsp_data = net.request(settings.GET_COUNTRIES, {'key': self.key})
+        return self.handle_response(
+            'countries',
+            rsp_data,
+            30*ONE_DAY_TO_SECONDS
+        )
 
     def request_states(self, country: str) -> net.ReturnData:
         return_data = net.ReturnData()
+        if self.key == '':
+            return_data.error = True
+            return_data.reson = 'request key is empty'
+            return return_data
         if self.debug:
             return_data.data = json.loads(fake_data.request_state)
             return return_data
-        return_data.error = True
-        return_data.reson = 'Data empty error'
-        return return_data
+        cache_name = f'{country}_states'
+        states_cache = self.database.get_data(cache_name)
+        if states_cache is not None:
+            return_data.data = states_cache
+            return return_data
+        rsp_data = net.request(
+            settings.GET_STATES,
+            {'key': self.key, 'country': country}
+        )
+        return self.handle_response(
+            cache_name,
+            rsp_data,
+            30*ONE_DAY_TO_SECONDS
+        )
 
     def request_cities(self, country: str, state: str) -> net.ReturnData:
         return_data = net.ReturnData()
+        if self.key == '':
+            return_data.error = True
+            return_data.reson = 'request key is empty'
+            return return_data
         if self.debug:
             return_data.data = json.loads(fake_data.request_city)
             return return_data
-        return_data.error = True
-        return_data.reson = 'Data empty error'
-        return return_data
+        cache_name = f'{country}_{state}_cities'
+        cities_cache = self.database.get_data(cache_name)
+        if cities_cache is not None:
+            return_data.data = cities_cache
+            return return_data
+        rsp_data = net.request(
+            settings.GET_CITIRS_BY_STATE,
+            {'key': self.key, 'country': country, 'state': state}
+        )
+        return self.handle_response(
+            cache_name,
+            rsp_data,
+            30*ONE_DAY_TO_SECONDS
+        )
 
     def request_city_data(self,
                           country: str,
                           state: str,
                           city: str) -> net.ReturnData:
         return_data = net.ReturnData()
+        if self.key == '':
+            return_data.error = True
+            return_data.reson = 'request key is empty'
+            return return_data
         if self.debug:
             return_data.data = json.loads(fake_data.request_city_data)
             return return_data

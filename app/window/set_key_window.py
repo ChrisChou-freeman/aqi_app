@@ -66,6 +66,6 @@ class SetKeyWindow(base_window.Window):
         key_str = self.text_entry.get_text()
         if key_str != '':
             with self.data_base as db:
-                db.set_data('key', key_str)
+                db.set_data('key', key_str, 0)
         self.skey.key = key_str
         return self.skey
