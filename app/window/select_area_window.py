@@ -140,7 +140,7 @@ class SelectAreaWindow(base_window.Window):
             self.selection_list.set_item_list(self.get_cities())
 
     def get_countries(self) -> list[str]:
-        countries = aqi.AQIapi(debug=True).request_country()
+        countries = aqi.AQIapi(debug=True).request_countries()
         if countries.error:
             return []
         datas: list[dict[str, str]] = countries.data['data']
@@ -150,7 +150,7 @@ class SelectAreaWindow(base_window.Window):
         country = self.select_area.country
         if country is None:
             return []
-        states = aqi.AQIapi(debug=True).request_state(country)
+        states = aqi.AQIapi(debug=True).request_states(country)
         if states.error:
             return []
         datas: list[dict[str, str]] = states.data['data']
@@ -161,7 +161,7 @@ class SelectAreaWindow(base_window.Window):
         state = self.select_area.state
         if country is None or state is None:
             return []
-        citys_data = aqi.AQIapi(debug=True).request_city(country, state)
+        citys_data = aqi.AQIapi(debug=True).request_cities(country, state)
         if citys_data.error:
             return []
         datas: list[dict[str, str]] = citys_data.data['data']

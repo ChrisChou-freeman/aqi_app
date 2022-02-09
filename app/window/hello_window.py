@@ -2,7 +2,6 @@ import pygame as pg
 import pygame_gui as pg_gui
 from pygame_gui.core import ObjectID
 
-
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 800
 WINDOW_TITLE = 'Quick Start'

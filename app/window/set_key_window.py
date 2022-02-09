@@ -4,7 +4,6 @@ import webbrowser
 
 import pygame as pg
 import pygame_gui as pg_gui
-import pygame_gui
 from pygame_gui.core import ObjectID
 from pygame_gui import PackageResource
 

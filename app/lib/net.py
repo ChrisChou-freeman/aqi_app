@@ -3,6 +3,7 @@ import json
 import socket
 from http import client
 import urllib.request
+import urllib.parse
 import urllib.error
 from dataclasses import dataclass
 from typing import Any, Optional
@@ -24,7 +25,9 @@ async def a_request(url: str) -> client.HTTPResponse:
     return res
 
 
-def request(url: str) -> ReturnData:
+def request(url: str, arg: Optional[dict[str, str]] = None) -> ReturnData:
+    if arg is not None:
+        url += f'?{urllib.parse.urlencode(arg)}'
     return_data = ReturnData()
     res: Optional[client.HTTPResponse] = None
     try:

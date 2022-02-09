@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-
-from app.window import select_area_window, set_key_window
+from app import window
 
 
 # w = select_area_window.SelectAreaWindow()
-w = set_key_window.SetKeyWindow()
+w = window.set_key_window.SetKeyWindow()
 w.run()

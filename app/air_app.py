@@ -38,13 +38,16 @@ class App(rumps.App):
         w = window.SelectAreaWindow()
         result = w.run()
         if not result.success:
-            rumps.alert('Message', result.reson)
+            self.alert_window(result.reson)
         else:
             print(result)
 
     @rumps.notifications
     def notification_center(info: Any) -> None:
         print(info)
+
+    def alert_window(self, message: str) -> None:
+        rumps.alert('Message', message)
 
     @rumps.clicked(MENUS.set_key)
     def set_key_window(self, _) -> None:
