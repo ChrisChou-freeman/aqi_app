@@ -4,9 +4,6 @@ import time
 from datetime import datetime
 import os
 
-ONE_HOUR_T0_SECONDS = 60*60
-ONE_DAY_TO_SECONDS = 24*60*60
-
 
 class DataBase:
     def __init__(self, data_path: str) -> None:
