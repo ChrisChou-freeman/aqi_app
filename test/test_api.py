@@ -27,10 +27,21 @@ class TestCase:
         print(result)
         print('____')
 
+    def test_get_city_data(self) -> None:
+        country = 'China'
+        state = 'Jiangxi'
+        city = 'Ganzhou'
+        result = self.api_aqi.request_city_data(country, state, city)
+        print('city data')
+        print(result)
+        print('____')
+        return
+
     def run_test(self) -> None:
         self.test_get_countries()
         self.test_get_states()
         self.test_get_cities()
+        self.test_get_city_data()
 
 
 def main() -> None:

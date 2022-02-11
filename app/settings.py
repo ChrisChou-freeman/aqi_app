@@ -14,5 +14,7 @@ GET_STATES = 'http://api.airvisual.com/v2/states'
 GET_CITIRS_BY_STATE = 'http://api.airvisual.com/v2/cities'
 GET_AQI_DATA = 'http://api.airvisual.com/v2/city'
 
+ONE_HOUR_T0_SECONDS = 60*60
+ONE_DAY_TO_SECONDS = 24*60*60
 RGB_DARK = (0, 0, 0)
 RGB_WHITE = (255, 255, 255)

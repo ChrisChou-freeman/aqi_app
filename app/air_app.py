@@ -8,6 +8,7 @@ from . import window, settings
 
 class Menus(NamedTuple):
     update_time: str = 'Update Time'
+    current_location: str = 'My Location: empty'
     set_key: str = 'Set Key'
     change_area: str = 'Change Area'
     separator: object = rumps.separator
@@ -54,6 +55,10 @@ class App(rumps.App):
         w = window.SetKeyWindow()
         result = w.run()
         print(result)
+
+    @rumps.timer(60*60*10)
+    def update(self, _) -> None:
+        print('update....')
 
     def run(self) -> None:
         super().run()

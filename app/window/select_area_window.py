@@ -9,6 +9,7 @@ from pygame_gui import PackageResource
 from app.window import base_window
 from app.api import aqi
 from app import settings
+from app import data_base
 
 
 class MenuName(NamedTuple):
@@ -36,8 +37,11 @@ class SelectAreaWindow(base_window.Window):
             resource='test_theme.json'
         )
         super().__init__('', 550, 300, them_pack, settings.RGB_WHITE)
+        self.debug = False
         self.select_area = SelectArea()
         self.menu_name = MenuName()
+        with data_base.DataBase(settings.DATA_PATH) as db:
+            self.data_base = db
         self.current_sleceted_menu: Optional[pg_gui.elements.UIButton] = None
         self.label_tiele = pg_gui.elements.UILabel(
             pg.Rect(0, 0, 550, 50),
@@ -78,6 +82,9 @@ class SelectAreaWindow(base_window.Window):
             [],
             manager=self.manager
         )
+
+    def set_cache_selected_area(self) -> None:
+        ...
 
     def selected_menu(self, key_event: pg.event.Event) -> None:
         menu_list = [self.contries_menu, self.states_menu, self.city_menu]
@@ -140,8 +147,11 @@ class SelectAreaWindow(base_window.Window):
             self.selection_list.set_item_list(self.get_cities())
 
     def get_countries(self) -> list[str]:
-        countries = aqi.AQIapi(debug=True).request_countries()
+        countries = aqi.AQIapi(self.debug).request_countries()
         if countries.error:
+            self.is_running = False
+            self.select_area.success = False
+            self.select_area.reson = countries.reson
             return []
         datas: list[dict[str, str]] = countries.data['data']
         return [data['country'] for data in datas]
@@ -150,8 +160,11 @@ class SelectAreaWindow(base_window.Window):
         country = self.select_area.country
         if country is None:
             return []
-        states = aqi.AQIapi(debug=True).request_states(country)
+        states = aqi.AQIapi(self.debug).request_states(country)
         if states.error:
+            self.is_running = False
+            self.select_area.success = False
+            self.select_area.reson = states.reson
             return []
         datas: list[dict[str, str]] = states.data['data']
         return [data['state'] for data in datas]
@@ -161,12 +174,26 @@ class SelectAreaWindow(base_window.Window):
         state = self.select_area.state
         if country is None or state is None:
             return []
-        citys_data = aqi.AQIapi(debug=True).request_cities(country, state)
+        citys_data = aqi.AQIapi(self.debug).request_cities(country, state)
         if citys_data.error:
+            self.is_running = False
+            self.select_area.success = False
+            self.select_area.reson = citys_data.reson
             return []
         datas: list[dict[str, str]] = citys_data.data['data']
         return [data['city'] for data in datas]
 
+    def cache_select_area(self) -> None:
+        if not self.select_area.filled_all():
+            return
+        selected_country = self.select_area.country
+        selected_state = self.select_area.state
+        selected_city = self.select_area.city
+        select_area = f'{selected_country}_{selected_state}_{selected_city}'
+        with self.data_base as db:
+            db.set_data('my_location', select_area, 0)
+
     def run(self) -> SelectArea:
         super().run()
+        self.cache_select_area()
         return self.select_area
