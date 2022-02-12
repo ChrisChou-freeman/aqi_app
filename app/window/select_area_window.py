@@ -40,8 +40,7 @@ class SelectAreaWindow(base_window.Window):
         self.debug = False
         self.select_area = SelectArea()
         self.menu_name = MenuName()
-        with data_base.DataBase(settings.DATA_PATH) as db:
-            self.data_base = db
+        self.data_base = self.get_db()
         self.current_sleceted_menu: Optional[pg_gui.elements.UIButton] = None
         self.label_tiele = pg_gui.elements.UILabel(
             pg.Rect(0, 0, 550, 50),
@@ -83,8 +82,9 @@ class SelectAreaWindow(base_window.Window):
             manager=self.manager
         )
 
-    def set_cache_selected_area(self) -> None:
-        ...
+    def get_db(self) -> data_base.DataBase:
+        with data_base.DataBase(settings.DATA_PATH) as db:
+            return db
 
     def selected_menu(self, key_event: pg.event.Event) -> None:
         menu_list = [self.contries_menu, self.states_menu, self.city_menu]
