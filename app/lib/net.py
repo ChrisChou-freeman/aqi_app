@@ -20,7 +20,8 @@ async def a_request(url: str) -> client.HTTPResponse:
     loop = asyncio.get_event_loop()
     res: client.HTTPResponse = await loop.run_in_executor(
         None,
-        urllib.request.urlopen, url
+        urllib.request.urlopen,
+        url
     )
     return res
 

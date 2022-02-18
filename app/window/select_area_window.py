@@ -46,34 +46,34 @@ class SelectAreaWindow(base_window.Window):
             pg.Rect(0, 0, 550, 50),
             'Select Area',
             manager=self.manager,
-            object_id=ObjectID(object_id='#lbt')
+            object_id=ObjectID(object_id='#lbt', class_id=None)
         )
         self.mane_panel = pg_gui.elements.UIPanel(
             pg.Rect(-3, 50, 556, 45),
             3,
             manager=self.manager,
-            object_id=ObjectID(object_id='#mc')
+            object_id=ObjectID(object_id='#mc', class_id=None)
         )
         self.contries_menu = pg_gui.elements.UIButton(
             pg.Rect(2, -1, 100, 45),
             self.menu_name.Country,
             manager=self.manager,
             container=self.mane_panel,
-            object_id=ObjectID(object_id='#m')
+            object_id=ObjectID(object_id='#m', class_id=None)
         )
         self.states_menu = pg_gui.elements.UIButton(
             pg.Rect(100, -1, 100, 45),
             self.menu_name.State,
             manager=self.manager,
             container=self.mane_panel,
-            object_id=ObjectID(object_id='#m')
+            object_id=ObjectID(object_id='#m', class_id=None)
         )
         self.city_menu = pg_gui.elements.UIButton(
             pg.Rect(198, -1, 100, 45),
             self.menu_name.City,
             manager=self.manager,
             container=self.mane_panel,
-            object_id=ObjectID(object_id='#m')
+            object_id=ObjectID(object_id='#m', class_id=None)
         )
         self.accept_menu = None
         self.selection_list = pg_gui.elements.UISelectionList(

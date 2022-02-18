@@ -1,3 +1,4 @@
+import os
 import datetime
 from typing import Any, NamedTuple
 
@@ -9,7 +10,7 @@ from .api import AQIapi
 
 class Menus(NamedTuple):
     update_time: str = 'Update Time'
-    current_location: str = 'My Location:empty'
+    current_location: str = 'Location:empty'
     set_key: str = 'Set Key'
     change_area: str = 'Change Area'
     separator: object = rumps.separator
@@ -20,7 +21,7 @@ MENUS = Menus()
 
 class App(rumps.App):
     def __init__(self) -> None:
-        super().__init__('AQI:32')
+        super().__init__('AQI:--')
         rumps.debug_mode(settings.DEBUG)
         self.data_base = self.get_db()
         self._init_menu()
@@ -31,8 +32,8 @@ class App(rumps.App):
                 self.menu.add(rumps.MenuItem(menu))
             else:
                 self.menu.add(menu)
-        self._set_update_time()
-        self._set_location()
+        # self._set_update_time()
+        # self._set_location()
 
     def _set_update_time(self) -> None:
         self.menu[MENUS.update_time].title = self._get_refresh_time()
@@ -48,8 +49,14 @@ class App(rumps.App):
         self.menu[MENUS.current_location].title = self._get_cached_location()
 
     def set_aqi_data(self, location: str) -> None:
+        '''
+            set air quality index by location
+        '''
         country, state, city = location.split('_')
         api = AQIapi(False)
+        china_aqi_key = 'aqicn'
+        usa_aqi_key = 'aqius'
+        aqi_key = china_aqi_key if country == 'China' else usa_aqi_key
         result_data = api.request_city_data(
             country=country,
             state=state,
@@ -58,8 +65,26 @@ class App(rumps.App):
         if result_data.error:
             self.alert_window(result_data.reson)
         else:
-            data = result_data.data['data']
-            print(data)
+            data = result_data.data.get('data', None)
+            if data is None:
+                return
+            current_weather = data.get('current', None)
+            if current_weather is None:
+                return
+            pollution_data = current_weather.get('pollution', None)
+            if pollution_data is None:
+                return
+            self.title = f'AQI:{pollution_data[aqi_key]}'
+            weather = current_weather.get('weather', None)
+            if weather is None:
+                return
+            condition_icon = weather.get('ic', None)
+            if condition_icon is None:
+                return
+            condition_icon_path = os.path.join(
+                settings.CONDITION_ICON_PATH, f'{condition_icon}.png'
+            )
+            self.icon = condition_icon_path
 
     def _get_cached_location(self) -> str:
         with self.data_base as db:
@@ -69,8 +94,7 @@ class App(rumps.App):
         else:
             self.set_aqi_data(my_location)
             my_location = my_location.replace('_', '/')
-        print(my_location)
-        return f'My Location:{my_location}'
+        return f'Location:{my_location}'
 
     @rumps.clicked(MENUS.change_area)
     def change_area_window(self, _) -> None:
@@ -91,11 +115,11 @@ class App(rumps.App):
     @rumps.clicked(MENUS.set_key)
     def set_key_window(self, _) -> None:
         w = window.SetKeyWindow()
-        result = w.run()
-        print(result)
+        w.run()
 
     @rumps.timer(60*60*10)
     def update(self, _) -> None:
+        self._set_update_time()
         self._set_location()
 
     def run(self) -> None:

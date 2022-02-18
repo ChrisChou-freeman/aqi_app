@@ -133,7 +133,7 @@ class AQIapi:
         cache_name = f'{country}_{state}_{city}_datas'
         city_data_cache = self.database.get_data(cache_name)
         if city_data_cache is not None:
-            return_data.data = city_data_cache
+            return_data.data = {'data': city_data_cache}
             return return_data
         rsp_data = net.request(
             settings.GET_AQI_DATA,

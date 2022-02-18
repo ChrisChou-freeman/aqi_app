@@ -33,18 +33,18 @@ class SetKeyWindow(base_window.Window):
             pg.Rect(0, 0, 400, 50),
             'engtry iqair key',
             manager=self.manager,
-            object_id=ObjectID(object_id='#lbt2')
+            object_id=ObjectID(object_id='#lbt2', class_id=None)
         )
         self.text_entry = pg_gui.elements.UITextEntryLine(
             pg.Rect(0, 55, 400, 45),
             manager=self.manager,
-            object_id=ObjectID(object_id='#tel')
+            object_id=ObjectID(object_id='#tel', class_id=None)
         )
         self.link_text = pg_gui.elements.UITextBox(
             '<a href="https://www.iqair.com/dashboard/api" >Get Key</a>',
             pg.Rect(160, 100, 80, 45),
             manager=self.manager,
-            object_id=ObjectID(object_id='#tb')
+            object_id=ObjectID(object_id='#tb', class_id=None)
         )
         key_str = self.data_base.get_data('key')
         if key_str is not None:
