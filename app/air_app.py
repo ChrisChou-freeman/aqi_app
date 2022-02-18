@@ -24,6 +24,7 @@ class App(rumps.App):
         super().__init__('AQI:--')
         rumps.debug_mode(settings.DEBUG)
         self.data_base = self.get_db()
+        # self.app_icon = os.path.join(settings.IMAGES_PATH, 'AQI.icns')
         self._init_menu()
 
     def _init_menu(self) -> None:
@@ -32,8 +33,6 @@ class App(rumps.App):
                 self.menu.add(rumps.MenuItem(menu))
             else:
                 self.menu.add(menu)
-        # self._set_update_time()
-        # self._set_location()
 
     def _set_update_time(self) -> None:
         self.menu[MENUS.update_time].title = self._get_refresh_time()
@@ -82,7 +81,7 @@ class App(rumps.App):
             if condition_icon is None:
                 return
             condition_icon_path = os.path.join(
-                settings.CONDITION_ICON_PATH, f'{condition_icon}.png'
+                settings.IMAGES_PATH, f'{condition_icon}.png'
             )
             self.icon = condition_icon_path
 
@@ -110,7 +109,7 @@ class App(rumps.App):
         print(info)
 
     def alert_window(self, message: str) -> None:
-        rumps.alert('Message', message)
+        rumps.alert('Message', message, icon_path=settings.APP_ICON)
 
     @rumps.clicked(MENUS.set_key)
     def set_key_window(self, _) -> None:

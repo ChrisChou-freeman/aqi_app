@@ -6,7 +6,9 @@ DEBUG = True
 TEST_DATA_PATH = os.path.join(PRO_PATH, 'test_aqi.data.json')
 THEME_PACK_PATH = os.path.join(PRO_PATH, 'data/theme')
 DATA_PATH = os.path.join(PRO_PATH, 'data/cache_data/data.pickel')
-CONDITION_ICON_PATH = os.path.join(PRO_PATH, 'data/images')
+IMAGES_PATH = os.path.join(PRO_PATH, 'data/images')
+APP_ICON = os.path.join(IMAGES_PATH, 'AQI.icns')
+APP_BMP = os.path.join(IMAGES_PATH, 'AQI.bmp')
 
 # iqari APIS
 # https://api-docs.iqair.com/?version=latest

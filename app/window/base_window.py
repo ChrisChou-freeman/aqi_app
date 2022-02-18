@@ -4,6 +4,8 @@ import pygame as pg
 import pygame_gui as pg_gui
 from pygame_gui import PackageResource
 
+from .. import settings
+
 
 class Window:
     def __init__(self,
@@ -29,6 +31,7 @@ class Window:
         )
 
     def _create_screen(self) -> pg.surface.Surface:
+        pg.display.set_icon(pg.image.load(settings.APP_BMP))
         screen = pg.display.set_mode(pg.Vector2(self.width, self.height))
         pg.display.set_caption(self.title)
         return screen
