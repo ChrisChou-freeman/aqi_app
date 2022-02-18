@@ -24,7 +24,6 @@ class App(rumps.App):
         super().__init__('AQI:--')
         rumps.debug_mode(settings.DEBUG)
         self.data_base = self.get_db()
-        # self.app_icon = os.path.join(settings.IMAGES_PATH, 'AQI.icns')
         self._init_menu()
 
     def _init_menu(self) -> None:

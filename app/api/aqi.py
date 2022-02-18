@@ -44,7 +44,7 @@ class AQIapi:
             return_data.reson = return_data.data['data']['message']
             return return_data
         with self.database as db:
-            print('save cache')
+            # print('save cache')
             db.set_data(cache_name, rsp_data.data['data'], outdate_time)
         return rsp_data
 
@@ -60,7 +60,7 @@ class AQIapi:
         cache_name = 'countries'
         contries_cache = self.database.get_data(cache_name)
         if contries_cache is not None:
-            print('cache data..')
+            # print('cache data..')
             return_data.data = {'data': contries_cache}
             return return_data
         rsp_data = net.request(settings.GET_COUNTRIES, {'key': self.key})
