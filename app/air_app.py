@@ -11,9 +11,10 @@ from .api import AQIapi
 class Menus(NamedTuple):
     update_time: str = 'Update Time'
     current_location: str = 'Location:empty'
+    seprator1: object = rumps.separator
     set_key: str = 'Set Key'
     change_area: str = 'Change Area'
-    separator: object = rumps.separator
+    separator2: object = rumps.separator
 
 
 MENUS = Menus()
@@ -82,6 +83,7 @@ class App(rumps.App):
             condition_icon_path = os.path.join(
                 settings.IMAGES_PATH, f'{condition_icon}.png'
             )
+            print(condition_icon_path)
             self.icon = condition_icon_path
 
     def _get_cached_location(self) -> str:
@@ -105,7 +107,7 @@ class App(rumps.App):
 
     @rumps.notifications
     def notification_center(info: Any) -> None:
-        print(info)
+        ...
 
     def alert_window(self, message: str) -> None:
         rumps.alert('Message', message, icon_path=settings.APP_ICON)
