@@ -83,7 +83,6 @@ class App(rumps.App):
             condition_icon_path = os.path.join(
                 settings.IMAGES_PATH, f'{condition_icon}.png'
             )
-            print(condition_icon_path)
             self.icon = condition_icon_path
 
     def _get_cached_location(self) -> str:
@@ -117,7 +116,7 @@ class App(rumps.App):
         w = window.SetKeyWindow()
         w.run()
 
-    @rumps.timer(60*60*10)
+    @rumps.timer(60*60)
     def update(self, _) -> None:
         self._set_update_time()
         self._set_location()

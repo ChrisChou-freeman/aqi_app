@@ -142,5 +142,5 @@ class AQIapi:
         return self.handle_response(
             cache_name,
             rsp_data,
-            10*settings.ONE_HOUR_T0_SECONDS
+            1*settings.ONE_HOUR_T0_SECONDS
         )
