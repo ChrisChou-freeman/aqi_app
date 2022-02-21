@@ -1,9 +1,9 @@
 import json
 from typing import Any
 
+from . import fake_data
 from ..lib import net
 from .. import settings
-from . import fake_data
 from .. import data_base
 
 
