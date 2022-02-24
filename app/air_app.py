@@ -18,7 +18,7 @@ class Menus(NamedTuple):
     separator2: object = rumps.separator
 
 
-MENUS = Menus()
+_Menus = Menus()
 
 
 class App(rumps.App):
@@ -29,14 +29,14 @@ class App(rumps.App):
         self._init_menu()
 
     def _init_menu(self) -> None:
-        for menu in MENUS:
+        for menu in _Menus:
             if type(menu) == str:
                 self.menu.add(rumps.MenuItem(menu))
             else:
                 self.menu.add(menu)
 
     def _set_update_time(self) -> None:
-        self.menu[MENUS.update_time].title = self._get_refresh_time()
+        self.menu[_Menus.update_time].title = self._get_refresh_time()
 
     def _get_refresh_time(self) -> str:
         return f'Update:{datetime.datetime.now().strftime("%m-%d %H:%M:%S")}'
@@ -46,7 +46,7 @@ class App(rumps.App):
             return db
 
     def _set_location(self) -> None:
-        self.menu[MENUS.current_location].title = self._get_cached_location()
+        self.menu[_Menus.current_location].title = self._get_cached_location()
 
     def set_aqi_data(self, location: str) -> None:
         '''
@@ -96,16 +96,16 @@ class App(rumps.App):
             my_location = my_location.replace('_', '/')
         return f'Location:{my_location}'
 
-    @rumps.clicked(Menus.update)
+    @rumps.clicked(_Menus.update)
     def update_click(self, _) -> None:
         self.refresh_data()
 
-    @rumps.clicked(MENUS.set_key)
+    @rumps.clicked(_Menus.set_key)
     def set_key_window(self, _) -> None:
         w = window.SetKeyWindow()
         w.run()
 
-    @rumps.clicked(MENUS.change_area)
+    @rumps.clicked(_Menus.change_area)
     def change_area_window(self, _) -> None:
         w = window.SelectAreaWindow()
         result = w.run()
