@@ -5,7 +5,6 @@ It works on MacOS **v10.13, v12.1**.
 MacOS app for monitor world air quality.
 
 ![Example4](./show_case/status_bar.png)
-![Example](./show_case/menu.png)
 ![Example3](./show_case/set_key.png)
 ![Example2](./show_case/select_area.png)
 
