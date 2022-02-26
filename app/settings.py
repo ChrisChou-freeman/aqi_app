@@ -1,5 +1,4 @@
 import os
-from typing import TypedDict
 
 PRO_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = False
@@ -22,43 +21,3 @@ ONE_HOUR_T0_SECONDS = 60*60
 ONE_DAY_TO_SECONDS = 24*60*60
 RGB_DARK = (0, 0, 0)
 RGB_WHITE = (255, 255, 255)
-
-
-class AqiLevel(TypedDict):
-    min: int
-    max: int
-    point: str
-
-
-AQI_LEVELS: list[AqiLevel] = [
-    {
-        'min': 0,
-        'max': 50,
-        'point': '🔵'
-    },
-    {
-        'min': 51,
-        'max': 100,
-        'point': '🟢'
-    },
-    {
-        'min': 101,
-        'max': 150,
-        'point': '🟡'
-    },
-    {
-        'min': 151,
-        'max': 200,
-        'point': '🟠'
-    },
-    {
-        'min': 201,
-        'max': 300,
-        'point': '🔴'
-    },
-    {
-        'min': 301,
-        'max': 1000,
-        'point': '🟣'
-    },
-]

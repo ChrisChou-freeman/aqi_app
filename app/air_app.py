@@ -1,11 +1,27 @@
 import os
 import datetime
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, TypedDict
 
 import rumps
 
 from . import window, settings, data_base
 from .api import AQIapi
+
+
+class AqiLevel(TypedDict):
+    min: int
+    max: int
+    point: str
+
+
+AQI_LEVELS = [
+    AqiLevel(min=0, max=50, point='🔵'),
+    AqiLevel(min=51, max=100, point='🟢'),
+    AqiLevel(min=101, max=150, point='🟡'),
+    AqiLevel(min=151, max=200, point='🟠'),
+    AqiLevel(min=201, max=300, point='🔴'),
+    AqiLevel(min=301, max=1000, point='🟣'),
+]
 
 
 class Menus(NamedTuple):
@@ -53,7 +69,7 @@ class App(rumps.App):
             aqi_number = int(aqi_number)
         except ValueError:
             aqi_number = 0
-        for aqi_level in settings.AQI_LEVELS:
+        for aqi_level in AQI_LEVELS:
             if aqi_number >= aqi_level['min'] \
                     and aqi_number <= aqi_level['max']:
                 return str(aqi_level['point'])
