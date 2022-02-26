@@ -11,16 +11,16 @@ from .api import AQIapi
 class AqiLevel(TypedDict):
     min: int
     max: int
-    point: str
+    sign: str
 
 
 AQI_LEVELS = [
-    AqiLevel(min=0, max=50, point='🔵'),
-    AqiLevel(min=51, max=100, point='🟢'),
-    AqiLevel(min=101, max=150, point='🟡'),
-    AqiLevel(min=151, max=200, point='🟠'),
-    AqiLevel(min=201, max=300, point='🔴'),
-    AqiLevel(min=301, max=1000, point='🟣'),
+    AqiLevel(min=0, max=50, sign='🔵'),
+    AqiLevel(min=51, max=100, sign='🟢'),
+    AqiLevel(min=101, max=150, sign='🟡'),
+    AqiLevel(min=151, max=200, sign='🟠'),
+    AqiLevel(min=201, max=300, sign='🔴'),
+    AqiLevel(min=301, max=1000, sign='🟣'),
 ]
 
 
@@ -72,7 +72,7 @@ class App(rumps.App):
         for aqi_level in AQI_LEVELS:
             if aqi_number >= aqi_level['min'] \
                     and aqi_number <= aqi_level['max']:
-                return str(aqi_level['point'])
+                return str(aqi_level['sign'])
         return '?'
 
     def set_aqi_data(self, location: str) -> None:
