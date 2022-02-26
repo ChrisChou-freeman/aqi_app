@@ -1,4 +1,4 @@
-from . import select_area_window, set_key_window
+from . import set_location_window, set_key_window
 
-SelectAreaWindow = select_area_window.SelectAreaWindow
+SetLocationWindow = set_location_window.SetLocationWindow
 SetKeyWindow = set_key_window.SetKeyWindow

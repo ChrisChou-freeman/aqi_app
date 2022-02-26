@@ -28,9 +28,9 @@ class Menus(NamedTuple):
     update_time: str = 'Update Time'
     current_location: str = 'Location:empty'
     seprator1: object = rumps.separator
-    update: str = 'Update'
+    refresh: str = 'Refresh'
     set_key: str = 'Set Key'
-    change_area: str = 'Change Area'
+    set_location: str = 'Set Location'
     separator2: object = rumps.separator
 
 
@@ -125,8 +125,8 @@ class App(rumps.App):
             my_location = my_location.replace('_', '/')
         return f'Location:{my_location}'
 
-    @rumps.clicked(_Menus.update)
-    def update_click(self, _) -> None:
+    @rumps.clicked(_Menus.refresh)
+    def refresh_click(self, _) -> None:
         self.refresh_data()
 
     @rumps.clicked(_Menus.set_key)
@@ -134,9 +134,9 @@ class App(rumps.App):
         w = window.SetKeyWindow()
         w.run()
 
-    @rumps.clicked(_Menus.change_area)
+    @rumps.clicked(_Menus.set_location)
     def change_area_window(self, _) -> None:
-        w = window.SelectAreaWindow()
+        w = window.SetLocationWindow()
         result = w.run()
         if not result.success:
             self.alert_window(result.reson)

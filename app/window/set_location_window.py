@@ -30,7 +30,7 @@ class SelectArea:
         return all([self.country, self.state, self.city])
 
 
-class SelectAreaWindow(base_window.Window):
+class SetLocationWindow(base_window.Window):
     def __init__(self) -> None:
         them_pack = PackageResource(
             package='data.theme',
@@ -44,7 +44,7 @@ class SelectAreaWindow(base_window.Window):
         self.current_sleceted_menu: Optional[pg_gui.elements.UIButton] = None
         self.label_tiele = pg_gui.elements.UILabel(
             pg.Rect(0, 0, 550, 50),
-            'Select Area',
+            'Set Location',
             manager=self.manager,
             object_id=ObjectID(object_id='#lbt', class_id=None)
         )
