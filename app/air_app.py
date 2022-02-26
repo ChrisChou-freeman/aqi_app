@@ -48,7 +48,7 @@ class App(rumps.App):
     def _set_location(self) -> None:
         self.menu[_Menus.current_location].title = self._get_cached_location()
 
-    def _get_aqi_level_point(self, aqi_number: int) -> str:
+    def _get_aqi_level_sign(self, aqi_number: int) -> str:
         try:
             aqi_number = int(aqi_number)
         except ValueError:
@@ -57,7 +57,6 @@ class App(rumps.App):
             if aqi_number >= aqi_level['min'] \
                     and aqi_number <= aqi_level['max']:
                 return str(aqi_level['point'])
-
         return '?'
 
     def set_aqi_data(self, location: str) -> None:
@@ -87,8 +86,8 @@ class App(rumps.App):
             if pollution_data is None:
                 return
             Aqi_number: int = pollution_data[aqi_key]
-            Aqi_level_point = self._get_aqi_level_point(Aqi_number)
-            self.title = f'AQI:{Aqi_number}{Aqi_level_point}'
+            Aqi_level_sign = self._get_aqi_level_sign(Aqi_number)
+            self.title = f'AQI:{Aqi_number}{Aqi_level_sign}'
             weather = current_weather.get('weather', None)
             if weather is None:
                 return
