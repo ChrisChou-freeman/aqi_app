@@ -48,6 +48,18 @@ class App(rumps.App):
     def _set_location(self) -> None:
         self.menu[_Menus.current_location].title = self._get_cached_location()
 
+    def _get_aqi_level_point(self, aqi_number: int) -> str:
+        try:
+            aqi_number = int(aqi_number)
+        except ValueError:
+            aqi_number = 0
+        for aqi_level in settings.AQI_LEVELS:
+            if aqi_number >= aqi_level['min'] \
+                    and aqi_number <= aqi_level['max']:
+                return str(aqi_level['point'])
+
+        return '?'
+
     def set_aqi_data(self, location: str) -> None:
         '''
             set air quality index by location
@@ -74,7 +86,9 @@ class App(rumps.App):
             pollution_data = current_weather.get('pollution', None)
             if pollution_data is None:
                 return
-            self.title = f'AQI:{pollution_data[aqi_key]}'
+            Aqi_number: int = pollution_data[aqi_key]
+            Aqi_level_point = self._get_aqi_level_point(Aqi_number)
+            self.title = f'AQI:{Aqi_number}{Aqi_level_point}'
             weather = current_weather.get('weather', None)
             if weather is None:
                 return
