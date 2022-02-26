@@ -103,7 +103,7 @@ class App(rumps.App):
                 return
             Aqi_number: int = pollution_data[aqi_key]
             Aqi_level_sign = self._get_aqi_level_sign(Aqi_number)
-            self.title = f'AQI:{Aqi_number}{Aqi_level_sign}'
+            self.title = f'AQI:{Aqi_number} {Aqi_level_sign}'
             weather = current_weather.get('weather', None)
             if weather is None:
                 return
