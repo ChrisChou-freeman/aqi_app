@@ -3,7 +3,8 @@ from app import window
 
 
 def run() -> None:
-    w = window.set_location_window.SetLocationWindow()
+    sa = window.SelectArea()
+    w = window.SetLocationWindow2(sa)
+    w.run()
+    print(sa)
     # w = window.set_key_window.SetKeyWindow()
-    result = w.run()
-    print(result)
